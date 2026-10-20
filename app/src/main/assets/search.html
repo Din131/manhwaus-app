@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="id" class="mf-app">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Cari</title>
+<style>
+  :root { --accent:#eb3349; --accent-dark:#c9243a; --red:#d64545; --bg:#f4f4f6; --card:#fff; --text:#1d1d22;
+          --muted:#6b6b75; --line:#e6e6ea; --chip:#fde8eb; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.4 system-ui, -apple-system, Roboto, sans-serif; }
+  header { position:sticky; top:0; z-index:3; background:var(--accent); color:#fff; box-shadow:0 1px 3px rgba(0,0,0,.15); }
+  .bar { display:flex; align-items:center; height:52px; padding:0 14px; }
+  .bar h1 { margin:0; font-size:18px; font-weight:600; }
+  .tabs { display:flex; padding:0 8px; }
+  .tabs button { flex:1; background:none; border:0; color:rgba(255,255,255,.8); font:600 14px system-ui, sans-serif;
+                 padding:10px 0 11px; border-bottom:3px solid transparent; }
+  .tabs button.on { color:#fff; border-bottom-color:#fff; }
+  .search { padding:12px 12px 0; }
+  .search form { position:relative; margin:0; }
+  .search input { width:100%; height:46px; border:1px solid var(--line); background:#fff; border-radius:10px;
+                  padding:10px 70px 10px 12px; font:inherit; color:var(--text); -webkit-appearance:none; }
+  .search input:focus { outline:2px solid var(--accent); border-color:transparent; }
+  .search button { position:absolute; top:6px; right:6px; width:56px; height:34px; border:0; border-radius:8px;
+                   background:var(--accent); color:#fff; font:600 14px system-ui, sans-serif; }
+  section { padding:0 12px; }
+  .filters { background:var(--card); border-radius:12px; margin:12px 0 0; padding:4px 12px 10px; box-shadow:0 1px 2px rgba(0,0,0,.06); }
+  .group { padding:10px 0 4px; border-bottom:1px solid var(--line); }
+  .group:last-child { border-bottom:0; }
+  .glabel { display:flex; align-items:center; justify-content:space-between; font-size:13px; font-weight:700;
+            color:var(--muted); text-transform:uppercase; letter-spacing:.03em; margin-bottom:8px; }
+  .glabel small { text-transform:none; letter-spacing:0; font-weight:500; }
+  .glabel button { background:none; border:0; color:var(--accent-dark); font:600 13px system-ui, sans-serif; padding:0; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; }
+  .chips.collapsed { max-height:76px; overflow:hidden; }
+  .chip { border:1px solid var(--line); background:#fff; color:var(--text); border-radius:999px; padding:6px 12px;
+          font:500 13px system-ui, sans-serif; }
+  .chip.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .hint { font-size:12px; color:var(--muted); margin:6px 0 2px; }
+  .hint.warn { color:#9a6b00; }
+  .chip:disabled { opacity:.4; }
+  .actions { display:flex; gap:8px; padding-top:10px; }
+  .actions button { flex:1; border:0; border-radius:8px; padding:10px; font:600 14px system-ui, sans-serif; }
+  .apply { background:var(--accent); color:#fff; }
+  .reset { background:var(--chip); color:var(--accent-dark); }
+  .summary { display:flex; align-items:center; justify-content:space-between; margin:14px 2px 8px; font-size:13px; color:var(--muted); }
+  .summary button { background:none; border:0; color:var(--accent-dark); font:600 13px system-ui, sans-serif; padding:0; }
+  .item { display:flex; gap:12px; background:var(--card); border-radius:12px; padding:10px; margin-bottom:10px;
+          box-shadow:0 1px 2px rgba(0,0,0,.06); text-decoration:none; color:inherit; position:relative; }
+  .cover { flex:none; width:72px; height:108px; border-radius:8px; overflow:hidden; background:var(--line);
+           display:flex; align-items:center; justify-content:center; color:var(--accent-dark); font-weight:700; font-size:22px; }
+  .cover img { width:100%; height:100%; object-fit:cover; display:block; }
+  .info { flex:1; min-width:0; }
+  .title { font-weight:700; font-size:15px; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .meta { color:var(--muted); font-size:13px; margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .score { display:inline-flex; align-items:center; gap:4px; margin-top:6px; margin-right:6px; font-size:13px; font-weight:700; color:#c08a00; }
+  html.mf-dark .score { color:#f2c94c; }
+  .score.none { color:var(--muted); font-weight:500; }
+  .tag { display:inline-block; font-size:11px; font-weight:700; padding:2px 7px; border-radius:6px; margin-top:6px; margin-right:4px; }
+  .tag.adult { background:var(--accent); color:#fff; }
+  .tag.done { background:var(--chip); color:var(--accent-dark); }
+  .tag.on { background:#e8eefb; color:#3559a8; }
+  .rank { position:absolute; top:6px; left:6px; min-width:24px; height:24px; padding:0 6px; border-radius:12px;
+          background:rgba(0,0,0,.72); color:#fff; font:700 12px/24px system-ui, sans-serif; text-align:center; }
+  .rank.r1 { background:#e0a100; } .rank.r2 { background:#8c96a0; } .rank.r3 { background:#b46a35; }
+  .state { text-align:center; color:var(--muted); padding:28px 16px; font-size:14px; }
+  .state button { margin-top:10px; border:0; background:var(--accent); color:#fff; border-radius:8px; padding:9px 16px; font:600 14px system-ui, sans-serif; }
+  .periods { display:flex; gap:6px; margin:12px 0 10px; }
+  .periods .chip { flex:1; text-align:center; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar"><h1>Cari</h1></div>
+  <div class="tabs">
+    <button id="tabBrowse" class="on">Jelajah</button>
+    <button id="tabRank">Ranking</button>
+  </div>
+</header>
+
+<div class="search">
+  <form id="titleForm" action="javascript:void(0)">
+    <input id="titleInput" type="search" placeholder="Cari judul manhwa…" autocomplete="off" enterkeyhint="search">
+    <button type="submit">GO</button>
+  </form>
+</div>
+
+<!-- ================= JELAJAH ================= -->
+<section id="browse">
+  <div class="filters">
+    <div class="group">
+      <div class="glabel"><span>Kategori</span></div>
+      <div id="cats" class="chips"></div>
+    </div>
+    <div class="group">
+      <div class="glabel"><span>Genre <small id="genreSummary"></small></span><button id="genreMore">Lihat semua</button></div>
+      <div id="genres" class="chips collapsed"></div>
+      <div class="hint">Pilih satu genre. Ketuk lagi untuk membatalkan.</div>
+    </div>
+    <div class="group">
+      <div class="glabel"><span>Urutkan</span></div>
+      <div id="sorts" class="chips"></div>
+    </div>
+    <div class="actions">
+      <button class="reset" id="resetBtn">Reset</button>
+      <button class="apply" id="applyBtn">Tampilkan</button>
+    </div>
+  </div>
+  <div class="summary"><span id="resultInfo"></span><button id="toTop" class="hidden">↑ Filter</button></div>
+  <div id="results"></div>
+  <div id="browseState" class="state hidden"></div>
+  <div id="sentinel" style="height:1px"></div>
+</section>
+
+<!-- ================= RANKING ================= -->
+<section id="ranking" class="hidden">
+  <div class="periods" id="periods"></div>
+  <div id="rankList"></div>
+  <div id="rankState" class="state hidden"></div>
+  <div id="rankSentinel" style="height:1px"></div>
+</section>
+
+<script>
+(function () {
+  var BASE = 'https://manhwaus.net';
+  var GENRES = ['Action','Adult','Adventure','BL','Comedy','Cooking','Crime','Demons','Drama','Ecchi','Fantasy','Fetish','GL',
+    'Gender Bender','Harem','Hentai','Historical','Horror','Isekai','Josei','Magic','Manhwa','Martial Arts','Mature','Medical',
+    'Military','Monster Girls','Mystery','Office Workers','Psychological','Reincarnation','Revenge','Romance','School Life',
+    'Sci-Fi','Seinen','Shoujo','Shounen','Slice of Life','Smut','Sports','Supernatural','Thriller','Tragedy','Uncensored','Yaoi','Yuri'];
+  var CATS = [['webtoons','Semua'], ['completed','Tamat'], ['raw','RAW']];
+  var SORTS = [['latest','Terbaru'], ['trending','Populer'], ['rating','Rating'], ['alphabet','A–Z']];
+  var PERIODS = [['trending','Populer'], ['rating','Rating tertinggi']];
+  var DEF = { cat: 'webtoons', genre: '', sort: 'latest' };
+
+  function load(k, d) { try { var v = JSON.parse(localStorage.getItem(k)); return v || JSON.parse(JSON.stringify(d)); } catch (e) { return JSON.parse(JSON.stringify(d)); } }
+  function store(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  // Ambil halaman situs lewat aplikasi (DNS anti-blokir); cadangan: fetch biasa
+  var pending = {}, seq = 0;
+  window.__mfNet = function (id, ok, text) { var cb = pending[id]; delete pending[id]; if (cb) cb(ok ? text : null); };
+  function net(url, cb) {
+    if (window.MFNet) { var id = 's' + (++seq); pending[id] = cb; window.MFNet.fetch(url, id); return; }
+    fetch(url, { credentials: 'include' }).then(function (r) { return r.ok ? r.text() : null; }).then(cb, function () { cb(null); });
+  }
+  function parse(html) { return new DOMParser().parseFromString(html, 'text/html'); }
+  function abs(u) {
+    if (!u) return '';
+    u = u.trim();
+    if (u.indexOf('//') === 0) return 'https:' + u;
+    if (u.charAt(0) === '/') return BASE + u;
+    return u;
+  }
+  function genreSlug(name) { return name.toLowerCase().replace(/\s+/g, '-'); }
+
+  // Kartu hasil
+  function readList(d) {
+    var out = [];
+    [].forEach.call(d.querySelectorAll('.page-item-detail'), function (it) {
+      var a = it.querySelector('.item-title a, h3 a');
+      if (!a) return;
+      var m = /\/webtoon\/([^\/?#]+)/.exec(a.getAttribute('href') || '');
+      if (!m) return;
+      var img = it.querySelector('.item-thumb img');
+      var rate = it.querySelector('.item-rate span');
+      var ch = it.querySelector('.chapter-item a');
+      var date = it.querySelector('.chapter-item .post-on');
+      out.push({
+        slug: m[1],
+        title: a.textContent.replace(/\s+/g, ' ').trim(),
+        cover: img ? abs(img.getAttribute('data-src') || img.getAttribute('src')) : '',
+        rating: rate ? rate.textContent.trim() : '',
+        latest: ch ? ch.textContent.trim() : '',
+        latestUrl: ch ? abs(ch.getAttribute('href')) : '',
+        isNew: !!(date && date.querySelector('img')),
+        date: date ? date.textContent.trim() : '',
+        adult: !!it.querySelector('.manga-title-badges')
+      });
+    });
+    return out;
+  }
+  function hasNext(d) {
+    return !!d.querySelector('.blog-pager li.next a, .pagination li.next a');
+  }
+  function card(m, rankNo) {
+    var a = el('a', 'item');
+    a.href = BASE + '/webtoon/' + m.slug + '/';
+    var cover = el('div', 'cover');
+    if (m.cover) {
+      var img = el('img'); img.loading = 'lazy'; img.src = m.cover;
+      img.onerror = function () { cover.textContent = (m.title || '?').charAt(0).toUpperCase(); };
+      cover.appendChild(img);
+    } else cover.textContent = (m.title || '?').charAt(0).toUpperCase();
+    a.appendChild(cover);
+    if (rankNo) a.appendChild(el('span', 'rank' + (rankNo <= 3 ? ' r' + rankNo : ''), String(rankNo)));
+    var info = el('div', 'info');
+    info.appendChild(el('div', 'title', m.title));
+    if (m.latest) info.appendChild(el('div', 'meta', m.latest + (m.isNew ? ' • baru' : (m.date ? ' • ' + m.date : ''))));
+    var r = parseFloat(m.rating);
+    info.appendChild(el('span', 'score' + (r ? '' : ' none'), r ? '★ ' + m.rating : 'Belum ada rating'));
+    if (m.adult) info.appendChild(el('span', 'tag adult', '18+'));
+    if (m.isNew) info.appendChild(el('span', 'tag done', 'Update baru'));
+    a.appendChild(info);
+    return a;
+  }
+
+  // ---------- Filter ----------
+  var f = load('mu:filters', DEF);
+  function listUrl(page) {
+    var path = f.genre ? '/genre/' + genreSlug(f.genre) + '/' : '/' + f.cat + '/';
+    if (page > 1) path += 'page/' + page + '/';
+    return BASE + path + '?orderby=' + f.sort;
+  }
+  function chips(container, list, key) {
+    container.innerHTML = '';
+    list.forEach(function (o) {
+      var b = el('button', 'chip', o[1]);
+      b.dataset.v = o[0];
+      b.onclick = function () { f[key] = o[0]; if (key === 'cat') f.genre = ''; refreshChips(); };
+      container.appendChild(b);
+    });
+  }
+  function buildGenres() {
+    var box = $('genres');
+    box.innerHTML = '';
+    GENRES.forEach(function (name) {
+      var b = el('button', 'chip', name);
+      b.dataset.v = name;
+      b.onclick = function () { f.genre = f.genre === name ? '' : name; refreshChips(); };
+      box.appendChild(b);
+    });
+  }
+  function refreshChips() {
+    [].forEach.call($('genres').children, function (b) { b.classList.toggle('on', f.genre === b.dataset.v); });
+    [].forEach.call($('cats').children, function (b) { b.classList.toggle('on', !f.genre && f.cat === b.dataset.v); });
+    [].forEach.call($('sorts').children, function (b) { b.classList.toggle('on', f.sort === b.dataset.v); });
+    $('genreSummary').textContent = f.genre ? '· ' + f.genre : '';
+    store('mu:filters', f);
+  }
+  $('genreMore').onclick = function () {
+    var g = $('genres'); g.classList.toggle('collapsed');
+    this.textContent = g.classList.contains('collapsed') ? 'Lihat semua' : 'Ringkas';
+  };
+  $('resetBtn').onclick = function () { f = JSON.parse(JSON.stringify(DEF)); refreshChips(); startBrowse(); };
+  $('applyBtn').onclick = function () { startBrowse(); };
+  $('toTop').onclick = function () { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+  window.addEventListener('scroll', function () { $('toTop').classList.toggle('hidden', window.scrollY < 500); }, { passive: true });
+
+  // ---------- Hasil Jelajah (gulir terus) ----------
+  var page = 0, loading = false, done = false, shown = 0, seen = {}, token = 0;
+  function describe() {
+    var src = f.genre ? f.genre : (CATS.filter(function (c) { return c[0] === f.cat; })[0] || ['', 'Semua'])[1];
+    var srt = (SORTS.filter(function (s) { return s[0] === f.sort; })[0] || ['', ''])[1];
+    return src + ' • ' + srt;
+  }
+  function startBrowse() {
+    token++; page = 0; done = false; loading = false; shown = 0; seen = {};
+    $('results').innerHTML = '';
+    $('resultInfo').textContent = describe();
+    hideState('browseState');
+    loadMore();
+  }
+  function loadMore() {
+    if (loading || done) return;
+    loading = true;
+    var p = page + 1, my = token;
+    showState('browseState', 'Memuat…');
+    net(listUrl(p), function (html) {
+      if (my !== token) return;
+      loading = false;
+      if (!html) { showState('browseState', 'Gagal memuat. Periksa koneksi.', true); return; }
+      var d = parse(html), list = readList(d);
+      page = p;
+      list.forEach(function (m) { if (seen[m.slug]) return; seen[m.slug] = 1; shown++; $('results').appendChild(card(m)); });
+      $('resultInfo').textContent = describe() + ' • ' + shown + ' manhwa';
+      if (!hasNext(d) || !list.length) {
+        done = true;
+        if (!shown) showState('browseState', 'Tidak ada hasil.'); else showState('browseState', 'Sudah semua.');
+      } else { hideState('browseState'); checkSentinel(); }
+    });
+  }
+  function showState(id, text, retry) {
+    var s = $(id); s.innerHTML = ''; s.appendChild(document.createTextNode(text));
+    if (retry) {
+      var b = el('button', null, 'Coba lagi');
+      b.onclick = function () { s.classList.add('hidden'); id === 'browseState' ? loadMore() : loadRank(); };
+      s.appendChild(el('br')); s.appendChild(b);
+    }
+    s.classList.remove('hidden');
+  }
+  function hideState(id) { $(id).classList.add('hidden'); }
+  var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting && page > 0) loadMore(); }, { rootMargin: '600px' });
+  io.observe($('sentinel'));
+  function checkSentinel() {
+    var r = $('sentinel').getBoundingClientRect();
+    if (r.top < window.innerHeight + 600 && !$('browse').classList.contains('hidden')) loadMore();
+  }
+
+  // ---------- Ranking ----------
+  var period = load('mu:rank', 'trending'), rPage = 0, rLoading = false, rDone = false, rCount = 0, rSeen = {}, rToken = 0;
+  function buildPeriods() {
+    var box = $('periods'); box.innerHTML = '';
+    PERIODS.forEach(function (p) {
+      var b = el('button', 'chip' + (p[0] === period ? ' on' : ''), p[1]);
+      b.onclick = function () { period = p[0]; store('mu:rank', period); buildPeriods(); startRank(); };
+      box.appendChild(b);
+    });
+  }
+  function startRank() {
+    rToken++; rPage = 0; rLoading = false; rDone = false; rCount = 0; rSeen = {};
+    $('rankList').innerHTML = ''; loadRank();
+  }
+  function loadRank() {
+    if (rLoading || rDone) return;
+    rLoading = true;
+    var p = rPage + 1, my = rToken;
+    showState('rankState', 'Memuat…');
+    net(BASE + '/webtoons/' + (p > 1 ? 'page/' + p + '/' : '') + '?orderby=' + period, function (html) {
+      if (my !== rToken) return;
+      rLoading = false;
+      if (!html) { showState('rankState', 'Gagal memuat. Periksa koneksi.', true); return; }
+      var d = parse(html), list = readList(d);
+      rPage = p;
+      list.forEach(function (m) { if (rSeen[m.slug]) return; rSeen[m.slug] = 1; rCount++; $('rankList').appendChild(card(m, rCount)); });
+      // Ranking dibatasi 100 teratas
+      if (rCount >= 100 || !hasNext(d) || !list.length) { rDone = true; hideState('rankState'); }
+      else hideState('rankState');
+    });
+  }
+  var rio = new IntersectionObserver(function (e) { if (e[0].isIntersecting && rPage > 0 && !$('ranking').classList.contains('hidden')) loadRank(); }, { rootMargin: '600px' });
+  rio.observe($('rankSentinel'));
+
+  // ---------- Tab ----------
+  function showTab(t) {
+    $('tabBrowse').classList.toggle('on', t === 'browse');
+    $('tabRank').classList.toggle('on', t === 'rank');
+    $('browse').classList.toggle('hidden', t !== 'browse');
+    $('ranking').classList.toggle('hidden', t !== 'rank');
+    store('mu:tab', t);
+    if (t === 'rank' && rPage === 0) startRank();
+    if (t === 'browse' && page === 0) startBrowse();
+  }
+  $('tabBrowse').onclick = function () { showTab('browse'); };
+  $('tabRank').onclick = function () { showTab('rank'); };
+
+  // Cari judul: buka halaman hasil pencarian situs
+  $('titleForm').onsubmit = function () {
+    var q = $('titleInput').value.trim();
+    if (q) location.href = BASE + '/search/?s=' + encodeURIComponent(q);
+    return false;
+  };
+
+  chips($('cats'), CATS, 'cat');
+  chips($('sorts'), SORTS, 'sort');
+  buildGenres();
+  refreshChips();
+  buildPeriods();
+  showTab(load('mu:tab', 'browse'));
+})();
+</script>
+</body>
+</html>

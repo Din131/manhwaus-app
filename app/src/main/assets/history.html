@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="id" class="mf-app">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Riwayat Baca</title>
+<style>
+  :root { --accent:#eb3349; --accent-dark:#c9243a; --bg:#f4f4f6; --card:#fff; --text:#1d1d22; --muted:#6b6b75; --line:#e6e6ea; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.4 system-ui, -apple-system, Roboto, sans-serif; }
+  header { position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:8px; height:52px; padding:0 8px 0 4px;
+           background:var(--accent); color:#fff; box-shadow:0 1px 3px rgba(0,0,0,.15); }
+  header button { background:none; border:0; color:#fff; font:inherit; padding:10px 12px; border-radius:8px; }
+  header button:active { background:rgba(255,255,255,.18); }
+  header h1 { flex:1; margin:0; font-size:18px; font-weight:600; }
+  #clear { font-size:13px; opacity:.95; }
+  .search { padding:10px 12px 0; }
+  .search input { width:100%; border:1px solid var(--line); background:#fff; border-radius:10px; padding:10px 12px; font:inherit; color:var(--text); }
+  .search input:focus { outline:2px solid var(--accent); border-color:transparent; }
+  main { padding:10px 12px 24px; }
+  .item { display:flex; gap:12px; background:var(--card); border-radius:12px; padding:10px; margin-bottom:10px;
+          box-shadow:0 1px 2px rgba(0,0,0,.06); align-items:stretch; }
+  .cover { flex:none; width:64px; height:90px; border-radius:8px; overflow:hidden; background:var(--line);
+           display:flex; align-items:center; justify-content:center; color:var(--accent-dark); font-weight:700; font-size:22px; }
+  .cover img { width:100%; height:100%; object-fit:cover; display:block; }
+  .info { flex:1; min-width:0; display:flex; flex-direction:column; }
+  .title { font-weight:600; font-size:15px; color:var(--text); text-decoration:none; display:-webkit-box;
+           -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .meta { color:var(--muted); font-size:13px; margin-top:2px; }
+  .bar { height:4px; background:var(--line); border-radius:2px; margin-top:6px; overflow:hidden; }
+  .bar span { display:block; height:100%; background:var(--accent); }
+  .actions { display:flex; gap:8px; margin-top:auto; padding-top:8px; }
+  .btn { flex:1; text-align:center; text-decoration:none; font-size:13px; font-weight:600; padding:8px 10px; border-radius:8px; }
+  .btn.primary { background:var(--accent); color:#fff; }
+  .btn.ghost { background:#fde8eb; color:var(--accent-dark); }
+  .del { flex:none; background:none; border:0; color:#a3a3ad; font-size:20px; line-height:1; padding:0 4px; align-self:flex-start; }
+  .new { align-self:flex-start; display:inline-block; margin:4px 0 0; padding:2px 8px; border-radius:6px; background:#ffe9c7; color:#9a5b00;
+         font-size:12px; font-weight:700; }
+  .pos { margin-top:3px; font-size:14px; color:var(--text); }
+  .pos b { font-weight:700; }
+  .pos .done { color:var(--accent-dark); font-weight:600; }
+  .item { flex-wrap:wrap; }
+  .chapters { flex-basis:100%; margin-top:2px; }
+  .toggle { width:100%; background:none; border:0; border-top:1px solid var(--line); color:var(--accent-dark);
+            font:600 13px system-ui, sans-serif; padding:9px 0 1px; text-align:left; }
+  .chlist { display:none; margin:4px 0 0; padding:0; list-style:none; }
+  .chapters.open .chlist { display:block; }
+  .chlist a { display:flex; align-items:center; gap:10px; padding:8px 4px; border-radius:8px; text-decoration:none; color:var(--text); }
+  .chlist a:active { background:#fde8eb; }
+  .chlist .name { flex:1; font-size:14px; font-weight:600; }
+  .chlist .page { font-size:13px; color:var(--muted); white-space:nowrap; }
+  .chlist .page.ok { color:var(--accent-dark); font-weight:600; }
+  .chlist .mini { width:46px; height:4px; background:var(--line); border-radius:2px; overflow:hidden; flex:none; }
+  .chlist .mini span { display:block; height:100%; background:var(--accent); }
+  .empty { text-align:center; color:var(--muted); padding:60px 24px; }
+  .empty b { display:block; color:var(--text); font-size:16px; margin-bottom:6px; }
+</style>
+</head>
+<body>
+<header>
+  <button id="back" aria-label="Kembali">&#8592;</button>
+  <h1>Riwayat Baca</h1>
+  <button id="clear">Hapus semua</button>
+</header>
+<div class="search"><input id="q" type="search" placeholder="Cari di riwayat…" autocomplete="off"></div>
+<main id="list"></main>
+
+<script>
+(function () {
+  var listEl = document.getElementById('list');
+  var openSet = {}; // manga yang daftar chapternya sedang dibuka
+  var qEl = document.getElementById('q');
+
+  function load() {
+    try { return JSON.parse((window.MFHistory && window.MFHistory.get()) || '{}') || {}; } catch (e) { return {}; }
+  }
+  function save(h) { try { window.MFHistory.set(JSON.stringify(h)); } catch (e) {} }
+
+  function ago(ts) {
+    var s = Math.max(0, (Date.now() - ts) / 1000);
+    if (s < 60) return 'baru saja';
+    if (s < 3600) return Math.floor(s / 60) + ' menit lalu';
+    if (s < 86400) return Math.floor(s / 3600) + ' jam lalu';
+    if (s < 86400 * 30) return Math.floor(s / 86400) + ' hari lalu';
+    return new Date(ts).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  // "V25 Ch282" -> "Vol. 25 · Chapter 282", "Ch2" -> "Chapter 2"
+  function chapterName(label, num) {
+    var m = /V(?:ol\.?)?\s*([^\s]+)\s*Ch\.?\s*([\d.]+)/i.exec(label || '');
+    if (m && m[1] !== 'TBD' && m[1] !== 'TBE') return 'Vol. ' + m[1] + ' \u00b7 Chapter ' + m[2];
+    var c = /Ch\.?\s*([\d.]+)/i.exec(label || '');
+    return 'Chapter ' + (c ? c[1] : num);
+  }
+  function pageText(e) {
+    if (e.done) return null;
+    if (e.n) return 'Halaman ' + ((e.p || 0) + 1) + ' dari ' + e.n;
+    return 'Halaman 1';
+  }
+  function prettySlug(s) {
+    return s.replace(/[-_]/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+  }
+
+  function render() {
+    var h = load();
+    var q = qEl.value.trim().toLowerCase();
+    var keys = Object.keys(h).filter(function (k) { return k !== '__meta' && h[k] && h[k].last; });
+    keys.sort(function (a, b) { return (h[b].at || 0) - (h[a].at || 0); });
+    listEl.innerHTML = '';
+    document.getElementById('clear').style.visibility = keys.length ? 'visible' : 'hidden';
+
+    var shown = 0;
+    keys.forEach(function (slug) {
+      var m = h[slug];
+      var title = m.t || prettySlug(slug);
+      if (q && title.toLowerCase().indexOf(q) < 0) return;
+      shown++;
+      var e = (m.ch && m.ch[m.last]) || {};
+      var readCount = m.ch ? Object.keys(m.ch).length : 0;
+
+      var item = el('div', 'item');
+      var cover = el('div', 'cover');
+      if (m.c) {
+        var img = el('img');
+        img.loading = 'lazy';
+        img.src = m.c;
+        img.onerror = function () {
+          cover.textContent = title.charAt(0).toUpperCase();
+          refreshCover(slug, true); // link sampul kedaluwarsa: ambil yang baru
+        };
+        cover.appendChild(img);
+      } else {
+        cover.textContent = title.charAt(0).toUpperCase();
+      }
+
+      var info = el('div', 'info');
+      var t = el('a', 'title', title);
+      t.href = 'https://manhwaus.net/webtoon/' + slug + '/';
+      info.appendChild(t);
+      if (m.newCh > 0) info.appendChild(el('span', 'new', '\u25cf ' + m.newCh + ' chapter baru'));
+      var pos = el('div', 'pos');
+      pos.appendChild(el('b', null, chapterName(m.lastLabel, m.last)));
+      var pt = pageText(e);
+      pos.appendChild(document.createTextNode(' \u2022 '));
+      pos.appendChild(pt ? document.createTextNode(pt) : el('span', 'done', 'Selesai \u2713'));
+      info.appendChild(pos);
+      info.appendChild(el('div', 'meta', ago(m.at || 0)));
+      if (e.n && !e.done) {
+        var bar = el('div', 'bar'), fill = el('span');
+        fill.style.width = Math.round(((e.p || 0) + 1) / e.n * 100) + '%';
+        bar.appendChild(fill); info.appendChild(bar);
+      }
+      var actions = el('div', 'actions');
+      var go = el('a', 'btn primary', e.done ? 'Baca lagi' : 'Lanjut baca');
+      go.href = m.lastUrl;
+      // Chapter terakhir sudah selesai dan ada chapter baru: langsung ke chapter berikutnya
+      if (e.done && m.newCh > 0 && m.nextUrl) {
+        go.textContent = 'Baca Ch ' + m.nextNum;
+        go.href = m.nextUrl;
+      }
+      var detail = el('a', 'btn ghost', 'Daftar chapter');
+      detail.href = 'https://manhwaus.net/webtoon/' + slug + '/';
+      actions.appendChild(go); actions.appendChild(detail);
+      info.appendChild(actions);
+
+      var del = el('button', 'del', '×');
+      del.setAttribute('aria-label', 'Hapus dari riwayat');
+      del.onclick = function () {
+        if (!confirm('Hapus "' + title + '" dari riwayat?')) return;
+        var hh = load(); delete hh[slug]; save(hh); render();
+      };
+
+      item.appendChild(cover); item.appendChild(info); item.appendChild(del);
+
+      // Semua chapter yang pernah dibaca, terbaru di atas
+      var nums = m.ch ? Object.keys(m.ch) : [];
+      if (nums.length) {
+        nums.sort(function (a, b) { return parseFloat(b) - parseFloat(a); });
+        var box = el('div', 'chapters' + (openSet[slug] ? ' open' : ''));
+        var tg = el('button', 'toggle');
+        var setLabel = function () {
+          tg.textContent = (box.classList.contains('open') ? '\u25be ' : '\u25b8 ') +
+            nums.length + ' chapter dibaca';
+        };
+        setLabel();
+        tg.onclick = function () {
+          box.classList.toggle('open');
+          openSet[slug] = box.classList.contains('open');
+          setLabel();
+        };
+        var ul = el('ul', 'chlist');
+        nums.forEach(function (n) {
+          var c = m.ch[n] || {};
+          var li = el('li'), a = el('a');
+          a.href = c.u || ('https://manhwaus.net/webtoon/' + slug + '/');
+          a.appendChild(el('span', 'name', chapterName(c.l, n)));
+          if (c.done) {
+            a.appendChild(el('span', 'page ok', 'Selesai \u2713'));
+          } else {
+            a.appendChild(el('span', 'page', c.n ? 'Hal. ' + ((c.p || 0) + 1) + '/' + c.n : 'Hal. 1'));
+            if (c.n) {
+              var mini = el('span', 'mini'), f = el('span');
+              f.style.width = Math.round(((c.p || 0) + 1) / c.n * 100) + '%';
+              mini.appendChild(f); a.appendChild(mini);
+            }
+          }
+          li.appendChild(a); ul.appendChild(li);
+        });
+        box.appendChild(tg); box.appendChild(ul);
+        item.appendChild(box);
+      }
+      listEl.appendChild(item);
+    });
+
+    if (!shown) {
+      var empty = el('div', 'empty');
+      empty.appendChild(el('b', null, q ? 'Tidak ditemukan' : 'Belum ada riwayat'));
+      empty.appendChild(document.createTextNode(q ? 'Coba kata kunci lain.' :
+        'Manhwa yang kamu baca akan muncul di sini, lengkap dengan chapter dan halaman terakhirnya.'));
+      listEl.appendChild(empty);
+    }
+  }
+
+  // ---------- Sampul otomatis ----------
+  // Halaman ini dibuka atas nama manhwaus.net, jadi bisa mengambil halaman detail manga
+  // langsung dari situs untuk mendapatkan link sampul (yang punya masa berlaku).
+  var COVER_TTL = 20 * 3600 * 1000;
+  var CHECK_TTL = 30 * 60 * 1000;   // cek chapter baru paling sering tiap 30 menit per manga
+  var tried = {}, queue = [], running = 0;
+  function absUrl(u) {
+    if (!u) return '';
+    u = u.trim();
+    if (u.indexOf('//') === 0) return 'https:' + u;
+    if (u.charAt(0) === '/') return 'https://manhwaus.net' + u;
+    return u;
+  }
+  function refreshCover(slug, force) {
+    if (tried[slug]) return;
+    var m = load()[slug];
+    if (!m) return;
+    var coverFresh = m.c && m.cAt && Date.now() - m.cAt < COVER_TTL;
+    var checkFresh = m.chkAt && Date.now() - m.chkAt < CHECK_TTL;
+    if (!force && coverFresh && checkFresh) return;
+    tried[slug] = true;
+    queue.push(slug);
+    pump();
+  }
+  function pump() {
+    while (running < 3 && queue.length) {
+      var slug = queue.shift();
+      running++;
+      fetch('https://manhwaus.net/webtoon/' + slug + '/', { credentials: 'include' })
+        .then(function (r) { return r.ok ? r.text() : ''; })
+        .then((function (slug) {
+          return function (html) {
+            if (!html) return;
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var img = doc.querySelector('.profile-manga .summary_image img');
+            var t = doc.querySelector('.post-title h1');
+            var h = load();
+            if (!h[slug]) return;
+            if (img) { h[slug].c = absUrl(img.getAttribute('data-src') || img.getAttribute('src')); h[slug].cAt = Date.now(); }
+            if (t && t.textContent.trim()) h[slug].t = t.textContent.trim();
+            // Chapter baru = chapter di situs yang nomornya di atas chapter tertinggi yang pernah dibaca
+            var read = Object.keys(h[slug].ch || {}).map(parseFloat).filter(function (x) { return !isNaN(x); });
+            var maxRead = read.length ? Math.max.apply(null, read) : 0;
+            var newer = {};
+            [].forEach.call(doc.querySelectorAll('.row-content-chapter a.chapter-name'), function (a) {
+              var mm = /chapter-(\d+(?:-\d+)?)/.exec(a.getAttribute('href') || '');
+              if (!mm) return;
+              var n = parseFloat(mm[1].replace('-', '.'));
+              if (n > maxRead && !newer[n]) newer[n] = absUrl(a.getAttribute('href'));
+            });
+            var nums = Object.keys(newer).map(parseFloat).sort(function (a, b) { return a - b; });
+            h[slug].newCh = nums.length;
+            h[slug].nextNum = nums.length ? String(nums[0]) : '';
+            h[slug].nextUrl = nums.length ? newer[nums[0]] : '';
+            h[slug].chkAt = Date.now();
+            save(h);
+            render();
+          };
+        })(slug))
+        .catch(function () {})
+        .then(function () { running--; pump(); });
+    }
+  }
+  function refreshAll() {
+    var h = load();
+    Object.keys(h).forEach(function (k) { if (k !== '__meta' && h[k] && h[k].last) refreshCover(k, false); });
+  }
+
+  document.getElementById('back').onclick = function () { history.length > 1 ? history.back() : (location.href = 'https://manhwaus.net/'); };
+  document.getElementById('clear').onclick = function () {
+    if (!confirm('Hapus semua riwayat baca?')) return;
+    var h = load(), meta = h.__meta; save(meta ? { __meta: meta } : {}); render();
+  };
+  qEl.addEventListener('input', render);
+  render();
+  refreshAll();
+})();
+</script>
+</body>
+</html>

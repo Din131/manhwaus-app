@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ManhwaUS</string>
+
+    <!-- Alamat situs yang dibuka. Kalau situsnya ganti domain, cukup ubah baris ini. -->
+    <string name="start_url" translatable="false">https://manhwaus.net/</string>
+
+    <string name="load_error">Gagal memuat halaman.\nKetuk untuk coba lagi.</string>
+    <string name="link_blocked">Link ke %1$s diblokir</string>
+    <string name="update_title">Update tersedia</string>
+    <string name="update_message">Versi baru %1$s sudah tersedia.\nVersi terpasang: %2$s.</string>
+    <string name="update_now">Update</string>
+    <string name="update_later">Nanti</string>
+    <string name="update_skip">Lewati versi ini</string>
+    <string name="update_downloading">Mengunduh update…</string>
+    <string name="update_failed">Gagal mengunduh update</string>
+    <string name="update_allow_install">Izinkan ManhwaUS memasang aplikasi, lalu buka lagi untuk update</string>
+    <string name="history">Riwayat baca</string>
+    <string name="nav_search">Cari</string>
+    <string name="nav_home">Beranda</string>
+    <string name="nav_history">Riwayat</string>
+    <string name="nav_bookmark">Bookmark</string>
+    <string name="nav_account">Akun</string>
+    <string name="update_checking">Memeriksa update…</string>
+    <string name="update_none">Sudah versi terbaru</string>
+    <string name="update_error">Gagal memeriksa update. Periksa koneksi internet.</string>
+    <string name="press_back_again">Tekan kembali sekali lagi untuk keluar</string>
+</resources>
