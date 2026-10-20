@@ -11,26 +11,14 @@ jobs:
           B=https://manhwaus.net
           mkdir -p out
           g(){ echo "### $2 $1" >> out/log.txt; curl -sS -A "$UA" -L -D out/$2.hdr -o out/$2 "$1"; echo "code $(head -1 out/$2.hdr) size $(wc -c < out/$2)" >> out/log.txt; }
-          g $B/ home.html
-          g $B/robots.txt robots.txt
-          D=$(grep -o "$B/[a-z0-9-]*/[a-z0-9-]*/\?\"" out/home.html | tr -d '"' | grep -v "genre\|tag\|page\|wp-\|feed" | head -1)
-          [ -z "$D" ] && D=$(grep -o 'href="[^"]*manhwa[^"]*"' out/home.html | head -3 | tail -1 | sed 's/href="//;s/"//')
-          echo "detail $D" >> out/log.txt
-          g "$D" detail.html
-          C=$(grep -o 'href="[^"]*chapter[^"]*"' out/detail.html | head -1 | sed 's/href="//;s/"//')
-          echo "chapter $C" >> out/log.txt
-          [ -n "$C" ] && g "$C" chapter.html
-          g "$B/?s=love&post_type=wp-manga" search_wp.html
-          g "$B/search?keyword=love" search_kw.html
-          g "$B/genre/romance" genre.html
-          g "$B/completed" completed.html
-          for u in $(grep -o '<link[^>]*icon[^>]*href="[^"]*"' out/home.html | grep -o 'href="[^"]*"' | sed 's/href="//;s/"//' | sort -u) $(grep -io '<img[^>]*logo[^>]*>' out/home.html | grep -o 'src="[^"]*"' | sed 's/src="//;s/"//' | sort -u); do
-            case "$u" in //*) u="https:$u";; /*) u="$B$u";; esac
-            n=logo_$(echo "$u" | md5sum | cut -c1-6)_$(basename "${u%%\?*}"); curl -sS -A "$UA" -L "$u" -o "out/$n"; echo "img $u -> $n" >> out/log.txt
-          done
-          for u in $(grep -o '<script[^>]*src="[^"]*"' out/chapter.html out/home.html 2>/dev/null | grep -o 'src="[^"]*"' | sed 's/src="//;s/"//' | grep -v "google\|cloudflareinsights\|ads" | sort -u | head -12); do
+          while read n u; do g "$u" $n.html; done < urls.txt
+          for u in $(grep -o '<script[^>]*src="[^"]*"' out/chapter.html out/detail.html out/search.html 2>/dev/null | grep -o 'src="[^"]*"' | sed 's/src="//;s/"//' | grep -v "google\|cloudflare\|magsrv\|jquery-3" | sort -u | head -12); do
             case "$u" in //*) u="https:$u";; /*) u="$B$u";; esac
             n=js_$(echo "$u" | md5sum | cut -c1-6)_$(basename "${u%%\?*}"); curl -sS -A "$UA" -L "$u" -o "out/$n"; echo "js $u -> $n" >> out/log.txt
+          done
+          for u in $(grep -o '<link[^>]*stylesheet[^>]*>' out/home.html | grep -o 'href="[^"]*"' | sed 's/href="//;s/"//' | sort -u); do
+            case "$u" in //*) u="https:$u";; /*) u="$B$u";; esac
+            n=css_$(basename "${u%%\?*}"); curl -sS -A "$UA" -L "$u" -o "out/$n"; echo "css $u -> $n" >> out/log.txt
           done
           git config user.name Din131; git config user.email Din131@users.noreply.github.com
           git add out; git commit -m "hasil"; git push

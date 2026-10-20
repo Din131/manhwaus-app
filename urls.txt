@@ -1,0 +1,12 @@
+detail https://manhwaus.net/webtoon/ogh-reboot/
+chapter https://manhwaus.net/webtoon/ogh-reboot/chapter-34/
+search https://manhwaus.net/search/?keyword=love
+search2 https://manhwaus.net/search/?keyword=love&page=2
+genre https://manhwaus.net/genre/romance/
+genre2 https://manhwaus.net/genre/romance/page/2/
+webtoons https://manhwaus.net/webtoons/
+completed https://manhwaus.net/completed/
+raw https://manhwaus.net/raw/
+login https://manhwaus.net/login/
+register https://manhwaus.net/register/
+adult https://manhwaus.net/18-only/
