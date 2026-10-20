@@ -10,13 +10,9 @@ jobs:
           UA="Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36"
           B=https://manhwaus.net
           mkdir -p out
-          g(){ echo "### $2 $1" >> out/log.txt; curl -sS -A "$UA" -L -D out/$2.hdr -o out/$2 "$1"; echo "code $(head -1 out/$2.hdr) size $(wc -c < out/$2)" >> out/log.txt; }
+          g(){ echo "### $2 $1" >> out/log.txt; curl -sS -A "$UA" -L -w "final %{url_effective}\n"  -D out/$2.hdr -o out/$2 "$1"; echo "code $(head -1 out/$2.hdr) size $(wc -c < out/$2)" >> out/log.txt; }
           while read n u; do g "$u" $n.html; done < urls.txt
-          for u in $(grep -o '<script[^>]*src="[^"]*"' out/chapter.html out/detail.html out/search.html 2>/dev/null | grep -o 'src="[^"]*"' | sed 's/src="//;s/"//' | grep -v "google\|cloudflare\|magsrv\|jquery-3" | sort -u | head -12); do
-            case "$u" in //*) u="https:$u";; /*) u="$B$u";; esac
-            n=js_$(echo "$u" | md5sum | cut -c1-6)_$(basename "${u%%\?*}"); curl -sS -A "$UA" -L "$u" -o "out/$n"; echo "js $u -> $n" >> out/log.txt
-          done
-          for u in $(grep -o '<link[^>]*stylesheet[^>]*>' out/home.html | grep -o 'href="[^"]*"' | sed 's/href="//;s/"//' | sort -u); do
+          for u in $(grep -oh '<link[^>]*stylesheet[^>]*>\|<link href=[^>]*>' out/search.html out/webtoons_rating.html | grep -o 'href="[^"]*"' | sed 's/href="//;s/"//' | sort -u); do
             case "$u" in //*) u="https:$u";; /*) u="$B$u";; esac
             n=css_$(basename "${u%%\?*}"); curl -sS -A "$UA" -L "$u" -o "out/$n"; echo "css $u -> $n" >> out/log.txt
           done

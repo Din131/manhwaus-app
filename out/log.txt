@@ -1,28 +1,0 @@
-### detail.html https://manhwaus.net/webtoon/ogh-reboot/
-code HTTP/2 200  size 84592
-### chapter.html https://manhwaus.net/webtoon/ogh-reboot/chapter-34/
-code HTTP/2 200  size 76413
-### search.html https://manhwaus.net/search/?keyword=love
-code HTTP/2 200  size 26169
-### search2.html https://manhwaus.net/search/?keyword=love&page=2
-code HTTP/2 200  size 26169
-### genre.html https://manhwaus.net/genre/romance/
-code HTTP/2 200  size 104381
-### genre2.html https://manhwaus.net/genre/romance/page/2/
-code HTTP/2 200  size 103226
-### webtoons.html https://manhwaus.net/webtoons/
-code HTTP/2 200  size 104967
-### completed.html https://manhwaus.net/completed/
-code HTTP/2 200  size 99816
-### raw.html https://manhwaus.net/raw/
-code HTTP/2 200  size 103504
-### login.html https://manhwaus.net/login/
-code HTTP/2 200  size 24708
-### register.html https://manhwaus.net/register/
-code HTTP/2 200  size 25458
-### adult.html https://manhwaus.net/18-only/
-code HTTP/2 404  size 2314
-js https://manhwaus.net/js/jquery.star-rating-svg.js -> js_a26072_jquery.star-rating-svg.js
-js https://manhwaus.net/js/js.cookie.min.js -> js_327db2_js.cookie.min.js
-js https://manhwaus.net/js/owl.carousel.min.js -> js_920ac6_owl.carousel.min.js
-js https://manhwaus.net/mo2024/mo_frlo.js -> js_9f959d_mo_frlo.js
