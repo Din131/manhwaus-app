@@ -1,0 +1,686 @@
+.manga__body{
+    padding: 30px 0px;
+}
+.main-block{
+    width: 100%;
+    float: left;
+    margin-bottom: 20px;
+}
+.content-left{
+    width: calc(100% - 350px);
+    float: left;
+}
+.order-section h1{
+    font-size: 18px;
+    margin: 0;
+    float: left;
+}
+.order-nav-tabs{
+    float: right;
+}
+.order-nav-tabs span{
+    float: right;
+    padding-right: 10px;
+    color: #eb3349;
+}
+.c-tabs-content{
+    float: right;
+}
+.c-tabs-content li{
+    display: inline-block;
+}
+.c-tabs-content li a{
+    text-decoration: none;
+    padding: 8px 10px 9px;
+    color: #ccc;
+}
+.c-tabs-content li a:hover{
+    color: #eb3349;
+}
+.c-tabs-content li a.active{
+    color: #eb3349;
+    font-weight: bold;
+}
+.c-tabs-content li:last-child a{
+    padding-right: 0px;
+}
+.manga-lists{
+    width: calc(100% + 20px);
+    float: left;
+    margin-left: -10px;
+}
+.list-item{
+    width: calc(50% - 20px);
+    float: left;
+    padding: 10px;
+}
+.mn-item .item-thumb{
+    display: table-cell;
+    vertical-align: middle;
+}
+.mn-item .item-thumb a{
+    display: block;
+}
+.mn-item .item-thumb img{
+    width: 105px;
+    height: 140px;
+    object-fit: cover;
+    padding-right: 10px;
+}
+.mn-item .item-data{
+    display: table-cell;
+    vertical-align: middle;
+}
+.mn-item .item-data h3{
+    font-size: 13px;
+    margin: 0px 0px 5px 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-weight: 500;
+}
+.mn-item .item-data h3 a{
+    text-decoration: none;
+    color: white;
+}
+.mn-item .item-data h3 a:hover{
+    color: #eb3349;
+}
+.content-sidebar{
+    width: 335px;
+    float: left;
+    padding-left: 15px;
+}
+.sidebar-panel{
+    width: 100%;
+    float: left;
+    background: #222;
+}
+.sidebar-title{
+    width: calc(100% - 20px);
+    float: left;
+    display: inline-block;
+    color: #fff;
+    padding: 0 10px;
+    margin-bottom: 15px;
+    position: relative;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #312f40;
+}
+.sidebar-title h2{
+    color: #ccc;
+    font-size: 14px;
+    margin: 7px 0;
+}
+.sl-item{
+    margin-bottom: 10px;
+    border-bottom: 1px solid #383838;
+    width: calc(100% - 20px);
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+.sl-item .order{
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    font-size: 1em;
+    color: #eb3349;
+    top: 30px;
+    left: 15px;
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 10px;
+}
+.sl-item .order p{
+    border: 0.5px solid #eb3349;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.sl-item .item-thumb img{
+    width: 65px !important;
+    height: auto !important;
+}
+.sidebar-panel .sl-item:last-child{
+    border-bottom: none;
+    margin-bottom: 0px;
+}
+.section-breadcrumb{
+    width: calc(100% - 20px);
+    background: #222;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 12px;
+}
+.section-breadcrumb .breadcrumb{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+.section-breadcrumb .breadcrumb li{
+    display: inline-block;
+}
+.section-breadcrumb .breadcrumb li+li:before{
+    content: "/";
+    padding: 0 4px;
+    float: left;
+    margin-top: 2px;
+    color: #ccc;
+    font-size: 10px;
+}
+.section-breadcrumb .breadcrumb li a{
+    text-decoration: none;
+    color: #ccc;
+    font-size: 11px;
+}
+.section-breadcrumb .breadcrumb li a:hover{
+    color: #eb3349;
+}
+.profile-manga{
+    width: calc(100% - 20px);
+    float: left;
+    background: #222;
+    padding: 10px;
+}
+.profile-manga .summary_image{
+    width: 180px;
+    float: left;
+}
+.profile-manga .summary_image img{
+    width: 100%;
+    min-height: 200px;
+}
+.profile-manga .summary_image .book-mark{
+    background: #eb3349;
+    padding: 7px;
+    color: white;
+    width: calc(100% - 14px);
+    border-radius: 5px;
+    text-align: center;
+}
+.profile-manga .summary_image .book-mark:hover{
+    cursor: pointer;
+}
+.profile-manga .summary_image .b_count{
+    width: 100%;
+    float: left;
+    text-align: center;
+    font-size: 12px;
+    padding-top: 5px
+}
+.profile-manga .summary_image .minfo{
+    padding: 7px;
+    background: #343434;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    overflow: hidden;
+    margin-top: 6px;
+    font-size: 13px;
+    width: calc(100% - 14px);
+    float: left;
+}
+.profile-manga .summary_image .minfo i{
+    font-style: normal;
+    float: right;
+}
+
+.profile-manga .summary_content_wrap{
+    width: calc(100% - 195px);
+    float: left;
+    padding-left: 15px;
+}
+.story-rating{
+    display: inline-block;
+    padding-right: 10px;
+}
+.post-title h1{
+    font-size: 18px;
+    color: white;
+    margin-top: 0px;
+    font-weight: 500;
+    font-family: 'Rubik', sans-serif;
+}
+.manga-summary .tab-summary{
+    padding: 15px 0 50px;
+    display: table;
+    width: 100%;
+}
+.manga-summary .tab-summary .summary_image{
+    width: 225px;
+    padding: 15px;
+    background: #222;
+    display: table-cell;
+    vertical-align: middle;
+}
+.manga-summary .tab-summary .summary_image img{
+    width: 100%;
+    height: auto;
+}
+.manga-summary .tab-summary .summary_content_wrap{
+    overflow: hidden;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 30px;
+    position: relative;
+}
+.summary_content_wrap .summary_content{
+    width: 100%;
+    float: left;
+}
+
+.summary_content .post-rating{
+    margin-bottom: 15px;
+}
+.summary_content .post-rating span.avgrate{
+    font-size: 14px;
+    padding-left: 10px;
+}
+.summary_content .post-content_item{
+    margin-bottom: 10px;
+}
+.summary_content .post-content_item .vote-details{
+    display: inline-block;
+}
+.summary_content .post-content_item .vote-details .rate-title{
+    display: none;
+}
+.summary_content .post-content_item b{
+    font-weight: normal;
+    color: white;
+    font-size: 15px;
+    padding-right: 15px;
+}
+.summary_content .post-content_item h2{
+    font-size: 15px;
+    color: white;
+    margin: 0px;
+    font-weight: 500;
+}
+.summary_content .post-content_item a{
+    color: #b8b8b8;
+    text-decoration: none;
+    display: inline-block;
+}
+.summary_content .post-content_item a:hover{
+    color: #eb3349;
+}
+.summary_content .post-content_item a+a:before {
+    content: "/";
+    padding: 0 2px;
+    font-size: 12px;
+}
+.panel-story-description{
+    margin-bottom: 35px;
+}
+.panel-manga-chapter{
+    background: #222;
+}
+.block-heading{
+    width: calc(100% - 20px);
+    float: left;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #312f40;
+    padding: 8px 10px;
+}
+.block-heading h1{
+    float: left;
+    font-size: 16px;
+    color: #fff;
+    line-height: 20px;
+    font-weight: 500;
+    margin: 0;
+}
+.block-heading h2{
+    font-size: 16px;
+    color: #fff;
+    line-height: 20px;
+    font-weight: 500;
+    margin: 0;
+}
+.block-heading h4{
+    font-size: 16px;
+    color: #fff;
+    line-height: 20px;
+    font-weight: 500;
+    margin: 0;
+}
+.lastend{
+    width: calc(100% - 20px);
+    float: left;
+    padding: 10px;
+}
+.lastend .inepcx{
+    width: 50%;
+    float: left;
+    text-align: center;
+}
+.lastend .inepcx a{
+    display: block;
+    color: #fff;
+    margin: 5px;
+    padding: 15px;
+    background: #eb3349;
+    border-radius: 5px;
+    line-height: normal;
+    text-decoration: none;
+}
+.lastend .inepcx a span{
+    display: block;
+    font-size: 15px;
+}
+.lastend .inepcx:first-child a{
+    margin-left: 0px;
+}
+.lastend .inepcx:last-child a{
+    margin-right: 0px;
+}
+ul.row-content-chapter{
+    max-height: 470px;
+    overflow: hidden;
+    width: calc(100% - 20px);
+    float: left;
+    padding: 10px;
+}
+.row-content-chapter li{
+    width: calc(100% - 20px);
+    float: left;
+    padding: 5px 10px;
+    border: 1px solid #333;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border-radius: 5px;;
+}
+.row-content-chapter li:last-child{
+    margin-bottom: 0px;
+}
+.row-content-chapter li a.chapter-name{
+    float: left;
+    margin-right: 20px;
+    width: calc(100% - 110px);
+    line-height: 26px;
+    color: white;
+    text-decoration: none;
+}
+.row-content-chapter li a.chapter-name:hover{
+    color: #eb3349;
+}
+.row-content-chapter li span.chapter-time{
+    float: left;
+    width: 90px;
+    font-size: 14px;
+    line-height: 26px;
+    color: #ccc;
+    text-align: right;
+}
+.row-content-chapter li span.chapter-time img{
+    float: right;
+    margin-top: 5px;
+}
+.text-nowrap{
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+.more__chapters{
+    text-align: center;
+    padding: 20px 0px;
+}
+.more__chapters span{
+    font-weight: bold;
+}
+.more__chapters span:hover{
+    cursor: pointer;
+}
+.manga-keys h5{
+    margin-bottom: 10px;
+    color: #ccc;
+}
+.manga-keys .tags_list{
+    width: 100%;
+    float: left;
+}
+.manga-keys a{
+    display: inline-block;
+    text-decoration: none;
+    color: #b8b8b8;
+    margin-bottom: 2px;
+    padding: 0px 5px;
+    font-size: 12px;
+}
+.manga-keys a:hover{
+    color: #eb3349;
+}
+.relation-content .sl-item{
+    width: calc(25% - 20px);
+    padding: 0px 10px;
+    border-bottom: none;
+}
+.relation-content  .sl-item .item-thumb img{
+    width: 70px !important;
+    height: 95px !important;
+}
+.relation-content .sl-item .mn-item .item-data h3{
+    font-size: 12px;
+}
+.relation-content .post-on{
+    font-size: 12px;
+}
+.headpost{
+    margin-bottom: 20px;
+}
+.headpost h1{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 20px;
+    color: white;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+}
+.read-manga{
+    margin: 20px 0px;
+}
+.chapchange{
+    text-align: center;
+}
+.chapchange select{
+    float: left;
+    margin: 0;
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    width: 150px;
+    padding-left: 15px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    height: 30px;
+    color: black;
+    font-size: 15px;
+    font-weight: normal;
+    overflow: hidden;
+    background: url(../images/select-arrows.svg) no-repeat #ebebeb;
+    background-position-x: calc(100% - 15px);
+    background-position-y: center;
+    border: 0;
+    outline: none !important;
+}
+.navi-change-chapter-btn{
+    float: right;
+}
+.navi-change-chapter-btn a{
+    height: 30px;
+    background: #eb3349;
+    display: inline-block;
+    color: white;
+    line-height: 30px;
+    text-decoration: none;
+    padding: 0px 15px;
+    border-radius: 5px;
+}
+.navi-change-chapter-btn a:hover{
+    background: white;
+    color: #eb3349;
+}
+.navi-change-chapter-btn a:last-child{
+    margin-left: 10px;
+}
+.read-content{
+    text-align: center;
+    padding: 30px 0px;
+}
+.read-content img{
+    height: auto;
+    width: 100%;
+    max-width: 720px;
+    display: block;
+    margin: auto;
+    min-height: 100px;
+}
+.chapter-sumary{
+    margin: 20px 0px;
+}
+.chapter-sumary h2{
+    font-size: 15px;
+}
+.chapter-sumary a{
+    text-decoration: none;
+    color: #eb3349;
+    font-weight: bold;
+}
+
+@media(max-width: 1100px) {
+    .content-left{
+        width: calc(100% - 315px);
+        margin-right: 0px;
+    }
+    .content-sidebar{
+        width: 300px;
+    }
+    .relation-content .sl-item{
+        width: calc(50% - 20px);
+    }
+    .relation-content .sl-item{
+        border-bottom: 1px solid #383838;
+    }
+}
+
+@media(max-width: 1000px){
+    .summary_content_wrap .summary_content .post_content{
+        width: 100%;
+    }
+    .summary_content_wrap .summary_content .post_status{
+        width: 100%;
+        margin-left: 0px;
+    }
+}
+
+@media(max-width: 900px){
+    .content-left{
+        width: 100%;
+    }
+    .content-sidebar{
+        display: none;
+    }
+}
+
+@media(max-width: 800px){
+    .manga-keys h5{
+        padding: 0px 10px;
+    }
+    .manga-keys .tags_list{
+        width: calc(100% - 20px);
+        padding: 0px 10px;
+    }
+}
+
+@media(max-width: 768px){
+    .manga-summary .tab-summary .summary_image{
+        width: auto;
+        display: block;
+        text-align: center;
+        margin-bottom: 15px;
+        padding: 0px;
+        background: none;
+    }
+    .manga-summary .tab-summary .summary_image img{
+        max-width: 225px;
+    }
+    .manga-summary .tab-summary .summary_content_wrap{
+        display: block;
+        position: unset;
+        padding-left: 0px;
+    }
+}
+
+@media(max-width: 700px){
+    .profile-manga .summary_image{
+        width: 100%;
+        float: left;
+        margin-bottom: 20px;
+    }
+    .summary_image_inner{
+        width: 250px;
+        margin: auto;
+    }
+    .profile-manga .summary_content_wrap{
+        width: 100%;
+        padding-left: 0px;
+    }
+    .profile-manga .summary_content_wrap .post-title{
+        text-align: center;
+    }
+    .profile-manga .summary_content_wrap .post-title h1{
+        font-size: 20px;
+    }
+    .summary_content .post-rating{
+        text-align: center;
+    }
+}
+
+@media(max-width: 550px){
+    .block-heading h1{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media(max-width: 500px){
+    .summary_content .post-content_item .summary-content{
+        width: 100%;
+        margin-top: 5px;
+    }
+    .relation-content .sl-item{
+        width: calc(100% - 20px);
+        border-bottom: 1px solid #383838;
+    }
+    .chapchange select{
+        width: 80%;
+        margin-left: 10%;
+        /*background-position-x: calc(100% - 20px);*/
+    }
+    .navi-change-chapter-btn{
+        width: 100%;
+        float: left;
+        text-align: center;
+        margin-top: 20px;
+    }
+}
+
+@media(max-width: 400px){
+    .chapchange select{
+        width: 100%;
+        margin-left: 0px;
+    }
+    .order-nav-tabs span{
+        display: none;
+    }
+}

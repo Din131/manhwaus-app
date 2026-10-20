@@ -1,0 +1,35 @@
+### search.html https://manhwaus.net/search/?s=love
+code HTTP/2 200  size 100241
+### search2.html https://manhwaus.net/search/page/2/?s=love
+code HTTP/2 404  size 2314
+### genre_rating.html https://manhwaus.net/genre/romance/?orderby=rating
+code HTTP/2 200  size 101868
+### webtoons_rating.html https://manhwaus.net/webtoons/?orderby=rating
+code HTTP/2 200  size 101084
+### webtoons_trending.html https://manhwaus.net/webtoons/?orderby=trending
+code HTTP/2 200  size 100247
+### webtoons_p2.html https://manhwaus.net/webtoons/page/2/?orderby=rating
+code HTTP/2 200  size 102158
+### completed_rating.html https://manhwaus.net/completed/?orderby=rating
+code HTTP/2 200  size 99831
+### bookmark.html https://manhwaus.net/bookmark/
+code HTTP/2 302  size 145173
+### user_bookmark.html https://manhwaus.net/user/bookmark/
+code HTTP/2 404  size 2314
+### user.html https://manhwaus.net/user/
+code HTTP/2 404  size 2314
+### logout.html https://manhwaus.net/logout/
+code HTTP/2 302  size 145173
+### user_logout.html https://manhwaus.net/user/logout/
+code HTTP/2 404  size 2314
+### profile.html https://manhwaus.net/profile/
+code HTTP/2 404  size 2314
+### history.html https://manhwaus.net/history/
+code HTTP/2 404  size 2314
+### chapter_first.html https://manhwaus.net/webtoon/ogh-reboot/chapter-1/
+code HTTP/2 200  size 76185
+css https://manhwaus.net/css/detail.css -> css_detail.css
+css https://manhwaus.net/css/main.css -> css_main.css
+css https://manhwaus.net/css/owl.carousel.min.css -> css_owl.carousel.min.css
+css https://manhwaus.net/css/star-rating-svg.css -> css_star-rating-svg.css
+css https://manhwaus.net/fontawesome/css/base.css -> css_base.css
