@@ -1,0 +1,22 @@
+HTTP/2 302 
+date: Tue, 20 Oct 2026 05:40:28 GMT
+content-type: text/html; charset=UTF-8
+location: https://manhwaus.net/genre/romance/
+server: cloudflare
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-cache-status: DYNAMIC
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=f%2FukpBrD3VJvPH2tIz8ojAUAuskZkNJEQbqb%2BF7GpyvQ7najxcyD%2Bc0A%2B2soti78NZJhWE7yHe7JbZIbek0Au5u0QVYp1LjEg38xwYiYRjf3zrl1ECsOKaODzNtUJh8%3D"}]}
+cf-ray: a4d5b01e8a8db162-DFW
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+date: Tue, 20 Oct 2026 05:40:29 GMT
+content-type: text/html; charset=UTF-8
+server: cloudflare
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=7BBaA8N%2BBFsE0kqHDfpj9xRDlepXTI7U6ND9LRPOgGdoeDxLPBBhWw6VF6i8uqyclX%2F9iMUJK2nbWfOtpo%2Fl2uE%2FnNbY8A2KCA1TdBOthyPOFDJLKN%2B0724UFBaQxC4%3D"}]}
+cf-cache-status: DYNAMIC
+vary: accept-encoding
+cf-ray: a4d5b020aeb0b162-DFW
+alt-svc: h3=":443"; ma=86400
+

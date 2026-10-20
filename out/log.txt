@@ -1,0 +1,27 @@
+### home.html https://manhwaus.net/
+code HTTP/2 200  size 145173
+### robots.txt https://manhwaus.net/robots.txt
+code HTTP/2 200  size 64
+detail https://manhwaus.net/s/
+### detail.html https://manhwaus.net/s/
+code HTTP/2 200  size 2
+chapter 
+### search_wp.html https://manhwaus.net/?s=love&post_type=wp-manga
+code HTTP/2 200  size 145173
+### search_kw.html https://manhwaus.net/search?keyword=love
+code HTTP/2 302  size 26169
+### genre.html https://manhwaus.net/genre/romance
+code HTTP/2 302  size 104381
+### completed.html https://manhwaus.net/completed
+code HTTP/2 302  size 99816
+img https://manhwaus.net/images/180x180.jpg -> logo_423782_180x180.jpg
+img https://manhwaus.net/images/192x192.jpg -> logo_d09f8d_192x192.jpg
+img https://manhwaus.net/images/32x32.jpg -> logo_e5642d_32x32.jpg
+img https://manhwaus.net/images/manhwaus-logo.png -> logo_47ff94_manhwaus-logo.png
+js https://manhwaus.net/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js -> js_f212c8_email-decode.min.js
+js https://manhwaus.net/js/jquery-3.1.0.min.js -> js_d3dd52_jquery-3.1.0.min.js
+js https://manhwaus.net/js/jquery.star-rating-svg.js -> js_a26072_jquery.star-rating-svg.js
+js https://manhwaus.net/js/js.cookie.min.js -> js_327db2_js.cookie.min.js
+js https://manhwaus.net/js/owl.carousel.min.js -> js_920ac6_owl.carousel.min.js
+js https://manhwaus.net/mo2024/mo_frlo.js -> js_9f959d_mo_frlo.js
+js https://a.magsrv.com/ad-provider.js -> js_562419_ad-provider.js
